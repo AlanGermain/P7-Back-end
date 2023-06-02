@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+require("./db/mongo");
 const cors = require("cors");
 const PORT = 4000;
 
@@ -40,7 +41,6 @@ function signUp(req, res) {
 
 function login(req, res) {
   const body = req.body;
-  console.log("body:", body);
 
   const userInDb = users.find((user) => user.email === body.email);
   if (userInDb == null) {
@@ -52,7 +52,6 @@ function login(req, res) {
     res.status(401).send("wrong credentials");
     return;
   }
-
   res.send({
     userId: "123",
     token: "token",
