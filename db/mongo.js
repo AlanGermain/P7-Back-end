@@ -1,6 +1,22 @@
-const PASSWORD = "7Ph6Whwy6gQCDvxD";
-const USER = "alangermain16";
-const DB_URL = `mongodb+srv://${USER}:${PASSWORD}@alang.hqbcde2.mongodb.net/?retryWrites=true&w=majority`;
-console.log("DB_URL:", DB_URL);
+require("dotenv").config();
+const mongoose = require("mongoose");
 
-module.exports = {};
+const DB_URL = `mongodb+srv://${USER}:${PASSWORD}@${DB_DOMAIN}`;
+console.log("DB_URL:", DB_URL);
+async function connect() {
+  try {
+    await mongoose.connect(DB_URL);
+    console.log("conect to DB");
+  } catch (e) {
+    console.error(e);
+  }
+}
+connect();
+const UserSchema = new mongoose.Schema({
+  email: String,
+  password: String,
+});
+
+const User = mongoose.model("User", UserSchema);
+
+module.exports = { User };
