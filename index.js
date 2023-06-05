@@ -3,6 +3,12 @@ const app = express();
 const { User } = require("./db/mongo");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
+const { books } = require("./db/books");
+const multer = require("multer");
+
+const upload = multer({
+  dest: "upload/",
+});
 const PORT = 4000;
 
 app.use(cors());
@@ -15,6 +21,16 @@ function sayHi(req, res) {
 app.get("/", sayHi);
 app.post("/api/auth/signup", signUp);
 app.post("/api/auth/login", login);
+app.get("/api/books", getBooks);
+app.post("/api/books", upload.single("image"), postBooks);
+
+function postBooks(req, res) {
+  const book = req.body;
+}
+
+function getBooks(req, res) {
+  res.send(books);
+}
 
 app.listen(PORT, function () {
   console.log(`server is running on : ${PORT}`);
