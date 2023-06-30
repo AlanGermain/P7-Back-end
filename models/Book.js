@@ -13,6 +13,7 @@ const BookSchema = new mongoose.Schema({
     },
   ],
   averageRating: Number,
+  imageUrl: String,
 });
 const Book = mongoose.model("Book", BookSchema);
 
