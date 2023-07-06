@@ -1,4 +1,4 @@
-const { upload } = require("../middleware/multer");
+const { upload, resizeImage } = require("../middleware/multer");
 const { Book } = require("../models/Book");
 const express = require("express");
 const jwt = require("jsonwebtoken");
@@ -8,9 +8,21 @@ const booksRouter = express.Router();
 booksRouter.get("/bestrating", getBestRating);
 booksRouter.get("/:id", getBookId);
 booksRouter.get("/", getBooks);
-booksRouter.post("/", checkToken, upload.single("image"), postBooks);
+booksRouter.post(
+  "/",
+  checkToken,
+  upload.single("image"),
+  resizeImage,
+  postBooks
+);
 booksRouter.delete("/:id", checkToken, deleteBook);
-booksRouter.put("/:id", checkToken, upload.single("image"), putBook);
+booksRouter.put(
+  "/:id",
+  checkToken,
+  upload.single("image"),
+  resizeImage,
+  putBook
+);
 booksRouter.post("/:id/rating", checkToken, postRating);
 
 async function getBestRating(req, res) {
@@ -183,7 +195,9 @@ async function getBooks(req, res) {
   });
   res.send(books);
 }
-
+{
+  /*sert a avoir le chemin de l'image */
+}
 function getAbsoluteImagePath(imageUrl) {
   return (
     process.env.PUBLIC_URL + "/" + process.env.IMAGES_FOLDER + "/" + imageUrl
