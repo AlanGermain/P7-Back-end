@@ -2,6 +2,7 @@ const { upload, resizeImage } = require("../middleware/multer");
 const { Book } = require("../models/Book");
 const express = require("express");
 const jwt = require("jsonwebtoken");
+const path = require("path");
 
 const booksRouter = express.Router();
 
@@ -169,11 +170,11 @@ async function getBookId(req, res) {
 
 async function postBooks(req, res) {
   const file = req.file;
+  console.log("file:", file);
   const stringifiedBook = req.body.book;
   const book = JSON.parse(stringifiedBook);
   const filename = file.filename;
   book.imageUrl = filename;
-
   // Ajouter une validation pour l'année (year)
   if (isNaN(book.year)) {
     return res.status(400).send("Invalid year. Year must be a number.");
@@ -199,8 +200,10 @@ async function getBooks(req, res) {
   /*sert a avoir le chemin de l'image */
 }
 function getAbsoluteImagePath(imageUrl) {
+  const webpPath = imageUrl.replace(/\.[^/.]+$/, ".webp");
+
   return (
-    process.env.PUBLIC_URL + "/" + process.env.IMAGES_FOLDER + "/" + imageUrl
+    process.env.PUBLIC_URL + "/" + process.env.IMAGES_FOLDER + "/" + webpPath
   );
 }
 
